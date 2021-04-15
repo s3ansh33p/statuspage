@@ -10,27 +10,30 @@
 <body>
   <?php
     if(!empty($_SESSION["id"])) {
-      echo '<nav class="navbar navbar-light bg-dark align-items-center justify-content-between fixed-top">
-      <div class="navbar-brand d-flex">
-        <a href="'.SITE_URL.'" class="mr-2">
+      echo '<nav class="navbar navbar-light bg-dark align-items-center justify-content-between fixed-top">';
+        echo '<a href="'.SITE_URL.'" class="mr-2">
           <img src="'.SITE_URL.'/assets/images/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
         </a>
-        <p class="text-white m-0 mr-auto">Welcome, 
-          <strong>
-          '.$_SESSION["username"].'
-          </strong>
-        </p>
-        </div><span>';
+        <p class="text-white m-0 mr-auto"><span class="mobile-hide">Welcome, </span><strong';
+        if ($_SESSION['username'] == ADMIN_USER) {
+          echo ' class="mobile-hide"';
+        };
+        echo '>'.$_SESSION["username"].'
+          </strong></p></span>';
         if ($_SESSION["username"] == ADMIN_USER) {
           echo '<button class="btn btn-danger p-1 mr-2" data-toggle="modal" data-target="#rootModal">
           User Management
           </button>';
+          echo '<button class="btn btn-danger p-1 mr-2" data-toggle="modal" data-target="#regModal">
+          Add User
+          </button>';
         }
-        echo '<button class="btn btn-danger p-1 mr-2" data-toggle="modal" data-target="#regModal">
-        Add User
-        </button><button class="btn btn-danger p-1 mr-2" data-toggle="modal" data-target="#userModal">
-        Edit User
-        </button><button class="btn btn-danger p-1" onclick="logout();">
+        if ($_SESSION['username'] != ADMIN_USER) {
+          echo '<button class="btn btn-danger p-1 mr-2" data-toggle="modal" data-target="#userModal">
+          Edit User
+          </button>';
+        };
+        echo '<button class="btn btn-danger p-1" onclick="logout();">
           Logout
         </button></span><script>function logout() {
           window.location.href = "'.SITE_URL.'/admin/submitLogout.php";
@@ -40,7 +43,7 @@
 
     function edit() {
       if(!empty($_SESSION["id"])){
-        echo '<a class="edit" data-toggle="modal" data-target="#editModal" onclick="edit(this);"><img src="'.SITE_URL.'/assets/images/svg/pencil.svg"></a>';
+        echo ' <a class="edit" data-toggle="modal" data-target="#editModal" onclick="edit(this);"><img src="'.SITE_URL.'/assets/images/svg/pencil.svg"></a>';
       };
     };
 
@@ -61,7 +64,7 @@
   <div class="jumbotron jumbotron-fluid">
     <div class="container">
       <div class="d-flex">
-        <img class="jumbo-img mr-2" src="<?=SITE_URL."/assets/images/logo.png";?>">     
+        <img class="jumbo-img mr-2 mobile-hide" src="<?=SITE_URL."/assets/images/logo.png";?>">     
         <h1><?=SRV_NAME;?> Status Page</h1>
       </div>
       <p><?=SRV_DESC;?></p>
@@ -111,15 +114,15 @@
         array_push($serviceLookup,$services[$i]['id']);
         echo '<li class="list-group-item d-flex align-items-center" id="service-'.$services[$i]['id'].'">
         <span class="badge badge-dark">'.$services[$i]['serviceTag'].'</span>
-        <a href="'.$services[$i]['serviceName'].'" target="_blank" class="ml-1 mr-auto">'.$services[$i]['serviceName'].'</a>';
+        <a href="'.$services[$i]['serviceName'].'" target="_blank" class="ml-1 mr-auto overflow-text">'.$services[$i]['serviceName'].'</a>';
         if ($services[$i]['serviceState'] == '1') {
-          echo '<div class="text-success">Operational</div>
+          echo '<div class="text-success mobile-hide">Operational</div>
           <div class="blob green"></div>';
         } else if ($services[$i]['serviceState'] == '2') {
-          echo '<div class="text-warning">Minor Outage</div>
+          echo '<div class="text-warning mobile-hide">Minor Outage</div>
           <div class="blob yellow"></div>';
         } else {
-          echo '<div class="text-danger">Critical Outage</div>
+          echo '<div class="text-danger mobile-hide">Critical Outage</div>
           <div class="blob red"></div>';
         }
         edit();
@@ -133,22 +136,36 @@
     <h6 class="border-bottom border-gray pb-2 mb-0">Updates <?=add();?></h6>
 
     <?php
-      if(isset($updates)) {
-        for ($j=0; $j<sizeof($updates); $j++) {
-          echo '<div class="media text-muted pt-3">
-          <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-            <h4 id="update-'.$updates[$j]["id"].'"><span class="badge badge-dark">'.$services[array_search($updates[$j]['serviceId'],$serviceLookup)]["serviceTag"].'</span> <span>'.$updates[$j]["updateTitle"].'</span>';
-            edit();
-            echo '</h4>
-            <h6>'.date("D M j G:i:s T", strtotime($updates[$j]["updateTime"])).'</h6>
-            <span class="d-block">'.$updates[$j]["updateDescription"].'</span>
-            </div>
-          </div>';
+      for ($i=0; $i < HOME_DATE_MAX; $i++) {
+        echo '<div class="text-muted mt-3 pt-3">
+        <div class="media-body mb-0 small lh-125 border-bottom border-gray">
+        <h4>'.date("l M j", strtotime(date('D'))-(86400*$i)).'</h4>
+        </div>';
+        $hasIncident = false;
+        if(isset($updates)) {
+          for ($j=0; $j<sizeof($updates); $j++) {
+            $dateCalc = strtotime(date('D'))-(86400*($i-1)) - (strtotime($updates[$j]["updateTime"]));
+            if ($dateCalc < 86400 && $dateCalc > 0) {
+              $hasIncident = true;
+              echo '<div class="text-muted pt-3">
+            <div class="media-body mb-0 small lh-125">
+              <h4 id="update-'.$updates[$j]["id"].'"><span class="badge badge-dark">'.$services[array_search($updates[$j]['serviceId'],$serviceLookup)]["serviceTag"].'</span> <span>'.$updates[$j]["updateTitle"].'</span>';
+              edit();
+              echo '</h4>
+              <h6>'.date("G:i:s T", strtotime($updates[$j]["updateTime"])).'</h6>
+              <span class="d-block">'.$updates[$j]["updateDescription"].'</span>
+              </div>
+            </div>';
+            };
+          };
         };
-      };
+        if (!$hasIncident) {
+          echo '<span class="pt-3 small">No incidents reported</span></div>';
+        }
+      }
     ?>
   </div>
-  <div class="footer d-flex justify-content-between pt-3 pb-4">
+  <div class="footer d-flex justify-content-between py-4 mt-4">
       <h6><a href="<?=SITE_URL;?>/admin<?php if(!empty($_SESSION["id"])){echo '/submitLogout.php">Logout';}else{echo '">Login';};?> </a></h6>
       <h6>&copy; <?=date('Y').' '.SRV_NAME;?></h6>
       <h6><a href="<?=SRV_LINK;?>" target="_blank"><?=SRV_NAME;?></a></h6>

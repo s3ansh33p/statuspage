@@ -202,3 +202,19 @@ body.center {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }
+
+.border-bottom {
+    border-bottom: 2px solid #ffe49d !important;
+}
+
+@media (max-width: 575px) {
+    .mobile-hide {
+        display: none;
+    }
+}
+
+.overflow-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

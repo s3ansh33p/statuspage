@@ -23,7 +23,8 @@ if ($result->num_rows > 0) {
 };
 
 // Updates
-$sql = "SELECT * FROM updates ORDER BY id DESC; ";
+$date = date("j-m-y", strtotime(date('D'))-(86400*HOME_DATE_MAX));
+$sql = "SELECT * FROM updates WHERE updateTime > '$date' ORDER BY id DESC; ";
 
 $result = $conn->query($sql);
 

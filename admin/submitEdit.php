@@ -64,7 +64,7 @@ if ($type == 'service') {
     $sub_2 = mysqli_real_escape_string($conn, $_POST['service']);
     $sub_3 = mysqli_real_escape_string($conn, $_POST['title']);
     $sub_4 = mysqli_real_escape_string($conn, $_POST['description']);
-    $sql = "UPDATE updates SET serviceId='$sub_2', updateTitle='$sub_3', updateDescription='$sub_4', updateTime='$sub_time' WHERE id='$id'; ";
+    $sql = "UPDATE updates SET serviceId='$sub_2', updateTitle='$sub_3', updateDescription='$sub_4' WHERE id='$id'; ";
 
         $result = $conn->query($sql);
         if (!$result) {

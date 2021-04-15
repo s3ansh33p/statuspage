@@ -14,6 +14,8 @@
 	define( "START_DATE" , "1617465600" );
 	# Unix Timestamp (Seconds)
 
+	define( "HOME_DATE_MAX" , 14 );
+
 	define( "GLOBAL_URL", dirname(__FILE__) );
 
 	define( "SITE_URL" , "http://localhost/Doge/dogegarden-status" );
@@ -43,7 +45,7 @@
 								."0123456789!@#$%^&*()");
 	# The range of characters that are used for hash encryption
 	
-	define( "ADMIN_USER" , "root" );
+	define( "ADMIN_USER" , "roots" );
 	# The user that can access user management
 	
 	define( "DB_HOST" , "localhost" );

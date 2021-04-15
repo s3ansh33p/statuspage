@@ -111,10 +111,17 @@ $(document).ready(function () {
                 </select>
             </div>`;
             for (let i=1; i<editData['update'].fields.length; i++) {
-                formData += `<div class="form-group">
-                <label for="field-${editData['update'].fields[i].toLowerCase()}" class="col-form-label">${editData['update'].fields[i]}:</label>
-                <input required type="text" class="form-control" id="field-${editData['update'].fields[i].toLowerCase()}" name="${editData['update'].fields[i].toLowerCase()}">
-                </div>`;
+                if (editData['update'].fields[i] == "Description") {
+                    formData += `<div class="form-group">
+                    <label for="field-${editData['update'].fields[i].toLowerCase()}" class="col-form-label">${editData['update'].fields[i]}:</label>
+                    <textarea class="form-control" id="field-${editData['update'].fields[i].toLowerCase()}" name="${editData['update'].fields[i].toLowerCase()}"></textarea>
+                    </div>`;
+                } else {
+                    formData += `<div class="form-group">
+                    <label for="field-${editData['update'].fields[i].toLowerCase()}" class="col-form-label">${editData['update'].fields[i]}:</label>
+                    <input required type="text" class="form-control" id="field-${editData['update'].fields[i].toLowerCase()}" name="${editData['update'].fields[i].toLowerCase()}">
+                    </div>`;
+                }
             };
         } else {
             formData += `<div class="input-group mb-3">
