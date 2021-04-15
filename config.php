@@ -42,7 +42,7 @@
 								."0123456789!@#$%^&*()");
 	# The range of characters that are used for hash encryption
 	
-	define( "ADMIN_USER" , "roots" );
+	define( "ADMIN_USER" , "root" );
 	# The user that can access user management
 	
 	define( "DB_HOST" , "localhost" );
