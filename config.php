@@ -11,9 +11,6 @@
 
 	date_default_timezone_set("Australia/Perth");
 
-	define( "START_DATE" , "1617465600" );
-	# Unix Timestamp (Seconds)
-
 	define( "HOME_DATE_MAX" , 14 );
 
 	define( "GLOBAL_URL", dirname(__FILE__) );
