@@ -13,7 +13,7 @@ if (!$conn) {
 
 $sub_1 = mysqli_real_escape_string($conn, $_POST['edit-section']);
 
-$sub_time = date(DateTime::ISO8601);
+$sub_time = date('Y-m-d H:i:s');
 if ($sub_1 == 'service') {
     $sub_2 = mysqli_real_escape_string($conn, $_POST['link']);
     $sub_3 = mysqli_real_escape_string($conn, $_POST['status']);

@@ -16,7 +16,7 @@ $sub_1 = mysqli_real_escape_string($conn, $_POST['edit-section']);
 $pos = strpos($sub_1, '-');
 $type = substr($sub_1,0,$pos);
 $id = substr($sub_1,($pos+1));
-$sub_time = date(DateTime::ISO8601);
+$sub_time = date('Y-m-d H:i:s');
 
 if ($type == 'service') {
 

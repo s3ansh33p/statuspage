@@ -75,9 +75,9 @@
   // Status
   $sql .= "CREATE TABLE IF NOT EXISTS statuses (
     id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    serviceName text NOT NULL DEFAULT 'Service',
+    serviceName text NOT NULL,
     serviceState int(1) NOT NULL DEFAULT 1, -- 1,2,3 Operational, Minor, Offline 
-    serviceTag text NOT NULL DEFAULT 'TAG', -- 'API'
+    serviceTag text NOT NULL,
     updateTime timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP() -- ISO String
   ); ";
 
